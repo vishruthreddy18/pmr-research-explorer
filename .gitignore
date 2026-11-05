@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+# Raw PubMed XML backups are large and can be re-downloaded with ingest.py
+data/raw/
+# data/publications.db and data/chroma/ ARE committed so the deployed app works without re-ingesting
+.model_cache/
+# Local planning notes (not published)
+pmr-research-bot-outline.md

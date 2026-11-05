@@ -1,0 +1,10 @@
+flask>=3.1,<4
+gunicorn>=22
+chromadb>=0.5,<2        # vector DB; also ships the ONNX build of all-MiniLM-L6-v2
+requests>=2.31,<3
+python-dotenv>=1.0
+google-genai>=1.0       # Google Gemini client (replaces the deprecated google-generativeai)
+
+# Optional:
+# sentence-transformers>=3   # only if EMBEDDING_BACKEND=sentence-transformers (pulls in PyTorch, ~1GB)
+# anthropic>=0.40            # only if LLM_PROVIDER=anthropic

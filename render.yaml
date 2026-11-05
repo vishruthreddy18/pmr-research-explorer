@@ -1,0 +1,21 @@
+# Render Blueprint (free tier). Commit data/publications.db and data/chroma/ before deploying:
+# the free tier has no persistent disk, so the app serves the prebuilt database from the repo.
+services:
+  - type: web
+    name: pmr-research-bot
+    runtime: python
+    plan: free
+    buildCommand: >-
+      pip install -r requirements.txt &&
+      python -c "from embed import get_embedding_function; get_embedding_function()(['warm up'])"
+    startCommand: gunicorn app:app --workers 1 --threads 4 --timeout 120 --bind 0.0.0.0:$PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: GOOGLE_API_KEY
+        sync: false        # set this in the Render dashboard
+      - key: MODEL_CACHE_DIR
+        value: .model_cache
+      - key: LLM_PROVIDER
+        value: gemini

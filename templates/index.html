@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PM&amp;R Research Explorer — University of Pittsburgh</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <a class="skip-link" href="#chat-input">Skip to chat</a>
+
+  <header class="site-header">
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Show faculty and topics" aria-expanded="false">☰</button>
+    <div class="brand">
+      <img src="{{ url_for('static', filename='pitt-logo.png') }}" alt="University of Pittsburgh" class="logo"
+           onerror="this.replaceWith(Object.assign(document.createElement('span'), {className: 'logo-fallback', textContent: 'Pitt'}))">
+      <div class="brand-text">
+        <span class="dept">Department of Physical Medicine &amp; Rehabilitation</span>
+        <span class="app-name">Research Explorer</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Faculty and topics">
+      <!-- Faculty list view -->
+      <section id="faculty-list-view">
+        <h2 class="sidebar-heading">Faculty</h2>
+        <input type="search" id="faculty-search" class="faculty-search" placeholder="Search faculty or topic…"
+               aria-label="Search faculty">
+        <ul class="faculty-list" id="faculty-list" aria-live="polite">
+          <li class="muted">Loading…</li>
+        </ul>
+      </section>
+
+      <!-- Faculty profile view -->
+      <section id="faculty-profile-view" hidden>
+        <button class="back-btn" id="profile-back">← All faculty</button>
+        <div id="faculty-profile"></div>
+      </section>
+
+      <hr class="divider">
+
+      <section>
+        <h2 class="sidebar-heading">Topics
+          <button class="link-btn" id="clear-topics" hidden>clear</button>
+        </h2>
+        <p class="hint">Check topics to narrow the chat to those research areas.</p>
+        <ul class="topic-list" id="topic-list">
+          {% for key, t in topics.items() %}
+          <li><label><input type="checkbox" value="{{ key }}"> <span>{{ t.label }}</span>
+              <span class="count" data-topic-count="{{ key }}"></span></label></li>
+          {% endfor %}
+        </ul>
+      </section>
+    </aside>
+
+    <main class="chat" aria-label="Chat">
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="welcome" id="welcome">
+          <h1>Explore research in Pitt PM&amp;R</h1>
+          <p>Ask a question in plain English. Answers come from the department's PubMed publications,
+            and each one links to its sources.</p>
+          <div class="chips" id="starter-chips">
+            <button class="chip">Who in the department works on brain-computer interfaces?</button>
+            <button class="chip">I'm a grad student interested in wheelchair technology. Who should I talk to?</button>
+            <button class="chip">What are the department's biggest research themes?</button>
+            <button class="chip">Has anyone here published on AI or machine learning in rehabilitation?</button>
+            <button class="chip">I study neuroplasticity after TBI. Who might I collaborate with?</button>
+            <button class="chip">Compare the research focus of Dr. Boninger and Dr. Cooper</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="active-filters" id="active-filters" hidden></div>
+
+      <form class="composer" id="composer">
+        <label for="chat-input" class="visually-hidden">Ask about our research</label>
+        <textarea id="chat-input" rows="1" placeholder="Ask about our research…" maxlength="2000"
+                  autocomplete="off"></textarea>
+        <button type="submit" id="send-btn" aria-label="Send">➤</button>
+      </form>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <span>Powered by PubMed data</span>
+    <span class="sep">│</span>
+    <span id="footer-stats">Loading…</span>
+    <button class="link-btn" id="new-chat">New chat</button>
+  </footer>
+
+  <script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>

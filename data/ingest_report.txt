@@ -1,0 +1,55 @@
+[ 1/27] Ted Allaire Barrios              2 hits   Barrios TA[Author]
+[ 2/27] Allison Bean                    21 hits   Bean AC[Author] AND "Pittsburgh"[Affiliation]
+[ 3/27] Corina Bondi                    65 hits   Bondi CO[Author] AND "Pittsburgh"[Affiliation]
+[ 4/27] Michael Boninger               289 hits   Boninger M[Author] AND "Pittsburgh"[Affiliation]  <-- REVIEW: unusually many results, name may be ambiguous
+[ 5/27] Jorge L. Candiotti              23 hits   Candiotti J[Author] AND "Pittsburgh"[Affiliation]
+[ 6/27] Aileen Chou                      9 hits   Chou A[Author] AND "Pittsburgh"[Affiliation] AND ("Physical Medicine"[Affiliation] OR "Rehabilitation"[Affiliation])
+[ 7/27] Jennifer Collinger             102 hits   Collinger J[Author] AND "Pittsburgh"[Affiliation]
+[ 8/27] Rory A. Cooper                 278 hits   Cooper RA[Author] AND "Pittsburgh"[Affiliation]  <-- REVIEW: unusually many results, name may be ambiguous
+[ 9/27] Brandon Daveler                 11 hits   Daveler B[Author] AND "Pittsburgh"[Affiliation]
+[10/27] Brad Dicianno                  141 hits   Dicianno BE[Author] AND "Pittsburgh"[Affiliation]
+[11/27] Jonathan Duvall                 13 hits   Duvall J[Author] AND "Pittsburgh"[Affiliation]
+[12/27] Lee Fisher                      58 hits   Fisher LE[Author] AND "Pittsburgh"[Affiliation]
+[13/27] Robert Gaunt                    59 hits   Gaunt RA[Author] AND "Pittsburgh"[Affiliation]
+[14/27] Amy Houtrow                    168 hits   Houtrow A[Author] AND "Pittsburgh"[Affiliation]
+[15/27] Jessica Jarvis                  21 hits   Jarvis JM[Author] AND "Pittsburgh"[Affiliation]
+[16/27] Anthony Kline                  106 hits   Kline AE[Author] AND "Pittsburgh"[Affiliation]
+[17/27] Renée Lajiness-O'Neill          48 hits   Lajiness-O'Neill R[Author]
+[18/27] Gina McKernan                   46 hits   McKernan G[Author] AND "Pittsburgh"[Affiliation]
+[19/27] Brendan McNeish                 22 hits   McNeish BL[Author]
+[20/27] Bailey Petersen                  8 hits   Petersen BA[Author] AND "Pittsburgh"[Affiliation] AND ("Physical Medicine"[Affiliation] OR "Rehabilitation"[Affiliation])
+[21/27] Elvira Pirondini                39 hits   Pirondini E[Author] AND "Pittsburgh"[Affiliation]
+[22/27] Amrita Sahu                     25 hits   Sahu A[Author] AND "Pittsburgh"[Affiliation] AND ("Physical Medicine"[Affiliation] OR "Rehabilitation"[Affiliation])
+[23/27] Gwendolyn Sowa                 155 hits   Sowa G[Author] AND "Pittsburgh"[Affiliation]
+[24/27] Amery Treble-Barna              34 hits   Treble-Barna A[Author] AND "Pittsburgh"[Affiliation]
+[25/27] Amy Wagner                     166 hits   Wagner AK[Author] AND "Pittsburgh"[Affiliation]
+[26/27] Lynn Worobey                    60 hits   Worobey L[Author] AND "Pittsburgh"[Affiliation]
+[27/27] Christina Zigler                51 hits   Zigler CK[Author]
+
+Ted Allaire Barrios             2 pubs (2022-2023)  Spinal Cord Injuries; Telecommunications; Self Report; Education Model; Educational Resilience; Flip
+Allison Bean                   21 pubs (2015-2026)  Physical and Rehabilitation Medicine; Internship and Residency; Curriculum; Chondrocytes; Biomarkers
+Corina Bondi                   64 pubs (2010-2026)  Brain Injuries, Traumatic; Traumatic brain injury; Controlled cortical impact; Morris water maze; Le
+Michael Boninger              287 pubs (1996-2026)  Wheelchairs; Spinal Cord Injuries; Equipment Design; Biomechanical Phenomena; Persons with Disabilit
+Jorge L. Candiotti             23 pubs (2012-2026)  Wheelchairs; Equipment Design; Persons with Disabilities; Assistive technology; Robotics; Self-Help 
+Aileen Chou                     9 pubs (2015-2026)  Stroke; Patient Readmission; Physical Therapy Modalities; Occupational Therapy; Aftercare; Patient D
+Jennifer Collinger            102 pubs (2008-2026)  Motor Cortex; Brain-Computer Interfaces; Electrodes, Implanted; Spinal Cord Injuries; Hand; Movement
+Rory A. Cooper                278 pubs (1994-2026)  Wheelchairs; Equipment Design; Persons with Disabilities; Spinal Cord Injuries; Biomechanical Phenom
+Brandon Daveler                11 pubs (2015-2026)  Wheelchairs; Equipment Design; assistive technology; wheelchair; Electric Power Supplies; Architectu
+Brad Dicianno                 141 pubs (2001-2026)  Wheelchairs; Persons with Disabilities; Spinal Dysraphism; Equipment Design; Self-Help Devices; Spin
+Jonathan Duvall                13 pubs (2016-2026)  Wheelchairs; Persons with Disabilities; Assistive technology; Self-Help Devices; Robotics; Caregiver
+Lee Fisher                     57 pubs (2014-2026)  Spinal Cord Stimulation; Ganglia, Spinal; Spinal Cord; neuromodulation; Electric Stimulation; Electr
+Robert Gaunt                   59 pubs (2009-2026)  Electric Stimulation; Somatosensory Cortex; Electrodes, Implanted; Microelectrodes; Ganglia, Spinal;
+Amy Houtrow                   166 pubs (2012-2026)  Children with Disabilities; Pediatrics; Spinal Dysraphism; Chronic Disease; Persons with Disabilitie
+Jessica Jarvis                 21 pubs (2014-2026)  Caregivers; Critical Care; Critical Illness; Intensive Care Units, Pediatric; Pediatrics; Infant, Ne
+Anthony Kline                 106 pubs (1999-2026)  Brain Injuries; Maze Learning; Brain Injuries, Traumatic; Traumatic brain injury; Cognition; Control
+Renée Lajiness-O'Neill         48 pubs (1998-2026)  Neuropsychological Tests; Caregivers; Child Development; Infant, Newborn; Infant, Premature; Autism 
+Gina McKernan                  46 pubs (2019-2026)  chronic low back pain; Spinal Cord Injuries; Walking; Wheelchairs; Spinal Dysraphism; Wheelchair; Ar
+Brendan McNeish                22 pubs (2010-2026)  Cancer Survivors; Neoplasms; cancer survivor; Peripheral Nervous System Diseases; Aging; Executive F
+Bailey Petersen                 7 pubs (2019-2025)  Gait; Amputation, Surgical; Spinal Cord Stimulation; Amputation; Phantom Limb; Feedback, Sensory; El
+Elvira Pirondini               39 pubs (2022-2026)  Spinal Cord; Spinal Cord Stimulation; Stroke; Magnetic Resonance Imaging; Motor Neurons; Brain; Deep
+Amrita Sahu                    25 pubs (2018-2026)  Extracellular Vesicles; Aging; Muscle, Skeletal; Exercise; Exosomes; Biomarkers; mitochondria; skele
+Gwendolyn Sowa                154 pubs (2007-2026)  Intervertebral Disc; Intervertebral Disc Degeneration; Low Back Pain; Rabbits; Aging; Cells, Culture
+Amery Treble-Barna             33 pubs (2017-2026)  Brain Injuries, Traumatic; traumatic brain injury; Brain-Derived Neurotrophic Factor; Biomarkers; Br
+Amy Wagner                    165 pubs (2001-2026)  Brain Injuries; Brain Injuries, Traumatic; Traumatic brain injury; Biomarkers; Prognosis; Inflammati
+Lynn Worobey                   60 pubs (2012-2026)  Spinal Cord Injuries; Wheelchairs; Persons with Disabilities; Quality of Life; Spinal cord injury; E
+Christina Zigler               51 pubs (2017-2026)  Caregivers; Patient Reported Outcome Measures; Quality of Life; Scleroderma, Localized; Pediatrics; 
