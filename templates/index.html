@@ -45,7 +45,7 @@
         <h2 class="sidebar-heading">Topics
           <button class="link-btn" id="clear-topics" hidden>clear</button>
         </h2>
-        <p class="hint">Check topics to narrow the chat to those research areas.</p>
+        <p class="hint">Limit answers to selected topics.</p>
         <ul class="topic-list" id="topic-list">
           {% for key, t in topics.items() %}
           <li><label><input type="checkbox" value="{{ key }}"> <span>{{ t.label }}</span>
@@ -59,8 +59,7 @@
       <div class="messages" id="messages" aria-live="polite">
         <div class="welcome" id="welcome">
           <h1>Explore research in Pitt PM&amp;R</h1>
-          <p>Ask a question in plain English. Answers come from the department's PubMed publications,
-            and each one links to its sources.</p>
+          <p>Answers are based on the department's PubMed publications and link to their sources.</p>
           <div class="chips" id="starter-chips">
             <button class="chip">Who in the department works on brain-computer interfaces?</button>
             <button class="chip">I'm a grad student interested in wheelchair technology. Who should I talk to?</button>
@@ -75,8 +74,8 @@
       <div class="active-filters" id="active-filters" hidden></div>
 
       <form class="composer" id="composer">
-        <label for="chat-input" class="visually-hidden">Ask about our research</label>
-        <textarea id="chat-input" rows="1" placeholder="Ask about our research…" maxlength="2000"
+        <label for="chat-input" class="visually-hidden">Ask a question</label>
+        <textarea id="chat-input" rows="1" placeholder="Ask a question…" maxlength="2000"
                   autocomplete="off"></textarea>
         <button type="submit" id="send-btn" aria-label="Send">➤</button>
       </form>

@@ -1,125 +1,126 @@
-# PMR Research Intelligence Bot
+# PM&R Research Explorer
 
-A RAG chatbot for Pitt's Department of Physical Medicine & Rehabilitation. Prospective students,
-faculty candidates and collaborators can ask questions in plain English and get answers that cite
-the department's actual PubMed publications.
+A chatbot that answers questions about research in the University of Pittsburgh's
+**Department of Physical Medicine & Rehabilitation**. Answers come from the department's published
+papers, and every answer links to its sources on PubMed.
 
-Everything is free: PubMed E-utilities for data, `all-MiniLM-L6-v2` embeddings that run locally,
-ChromaDB for vectors, the Google Gemini free tier for answers, and Flask for the app.
+> "Who works on brain-computer interfaces?" · "I'm interested in wheelchair technology. Who should I
+> talk to?" · "Compare Dr. Boninger's and Dr. Cooper's research."
 
-## Quick start
+**27 faculty · 1,488 publications (1994–2026)**
 
-Requirements: Python 3.10+, about 500 MB of disk space, and a free Gemini API key from
-https://aistudio.google.com/apikey.
-
-```bash
-export GOOGLE_API_KEY=your-key-here
-./setup.sh                          # venv + deps + PubMed ingest (~1 min) + embeddings (~1 min)
-source venv/bin/activate
-python app.py                       # open http://localhost:5001
-```
-
-Without an API key the app still works. It shows the matching publications and the faculty who
-appear most in them, but no AI-written summary.
+<!-- Screenshots: save them as docs/images/answer.png and docs/images/profile.png, then remove these comment markers.
+<p align="center">
+  <img src="docs/images/answer.png" width="49%" alt="Chat answer with citations">
+  <img src="docs/images/profile.png" width="49%" alt="Faculty profile sidebar">
+</p>
+-->
 
 ## How it works
 
+Retrieval-augmented generation (RAG). Papers are indexed once. For each question, the most relevant
+papers are retrieved and passed to an LLM, which writes an answer that cites them.
+
+```mermaid
+flowchart LR
+    subgraph Build["Build step (run once)"]
+        A[("PubMed<br/>E-utilities")] --> B["ingest.py"]
+        B --> C[("SQLite<br/>papers + profiles")]
+        C --> D["embed.py<br/>all-MiniLM-L6-v2"]
+        D --> E[("ChromaDB<br/>vectors")]
+    end
+    subgraph Ask["Each question"]
+        U(["User"]) --> F["Flask app"]
+        F --> Q["query.py"]
+        Q -->|search| E
+        Q -->|full records| C
+        Q -->|question + papers| G["Gemini"]
+        G -->|answer + citations| F
+    end
 ```
-PubMed ─► ingest.py ─► SQLite (data/publications.db) ─► embed.py ─► ChromaDB (data/chroma)
-                                                                        │
-User ─► app.py ─► query.py: detect faculty / years / topics ─► retrieve ─► Gemini ─► answer + sources
+
+Request flow:
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant Q as query.py
+    participant V as ChromaDB
+    participant L as Gemini
+    U->>Q: "Show me Dr. Collinger's recent work"
+    Q->>Q: Detect faculty, years, topics
+    Q->>V: Search, filtered to Collinger's papers
+    V-->>Q: Top 10 papers
+    Q->>L: Instructions + numbered papers + question
+    L-->>Q: Short answer citing [1], [3]...
+    Q-->>U: Answer + clickable PubMed source cards
 ```
 
-| File | Purpose |
-|------|---------|
-| `config.py` | All settings: models, paths, retrieval sizes, research-topic keywords |
-| `faculty.py` | The 27 faculty, with the PubMed author term and affiliation scope used for each |
-| `ingest.py` | Searches PubMed per faculty member, fetches records in batches of 200, deduplicates, stores in SQLite, builds research profiles from MeSH and keyword frequencies |
-| `embed.py` | One chunk per publication plus one summary chunk per faculty member, stored in ChromaDB with filterable metadata |
-| `query.py` | The RAG engine: query preprocessing, hybrid retrieval, prompt building, Gemini/Claude generation, citations |
-| `app.py` | Flask routes: `/`, `/api/chat`, `/api/faculty`, `/api/faculty/<slug>`, `/api/topics`, `/api/stats` |
-| `templates/`, `static/` | The Pitt-branded chat UI (plain HTML/CSS/JS) |
+## Tech stack
 
-### Retrieval details
-- **Faculty mentions** ("Dr. Collinger", "Amy Wagner") restrict the search to that person's papers.
-  For comparisons, results are split evenly between the people named.
-- **"Recent" / "latest"** questions about a person return their newest papers by date.
-- **Year phrases** ("after 2020", "between 2018 and 2021", "last 5 years") become metadata filters.
-- **Topics named in the question** (e.g. "machine learning", "wheelchair") reserve half the result
-  slots for papers tagged with that topic. The sidebar topic checkboxes act as hard filters.
-- **Department-wide questions** ("biggest themes", "strengths") add department statistics and every
-  faculty profile to the context.
-- **Follow-ups** ("what about her recent work?") reuse the faculty member from the previous turn.
-- Identical questions are cached for 6 hours.
+| Layer | Tool |
+|---|---|
+| Data | PubMed via NCBI E-utilities |
+| Embeddings | `all-MiniLM-L6-v2` (ONNX, runs locally on CPU) |
+| Vector store | ChromaDB |
+| LLM | Google Gemini, with fallback models (provider set by `LLM_PROVIDER`) |
+| Backend | Python, Flask, SQLite |
+| Frontend | HTML, CSS, JavaScript |
+| Hosting | Render |
 
-## Faculty search tuning
+## Quick start
 
-PubMed lists most authors as "LastName Initials" (for example "Boninger ML"), so searching on
-full first names misses most papers. Each entry in `faculty.py` sets:
-
-- `pubmed_author`: the author term, e.g. `"Boninger M"`.
-- `scope`: the affiliation filter.
-  - `pitt` (default) adds `Pittsburgh[Affiliation]`.
-  - `pmr` also requires "Physical Medicine" or "Rehabilitation" in the affiliation. Use it for
-    common names.
-  - `none` searches by author name only, for distinctive names.
-- `query`: an optional raw PubMed query that overrides both of the above.
-
-After each ingest, check `data/ingest_report.txt` for hit counts and auto-generated research areas.
-`python ingest.py --only "Chou"` dry-runs one person's search so you can tune it.
-
-Limitation: before 2014, PubMed recorded only the first author's affiliation. Older papers where a
-faculty member was not first author may therefore be missing for faculty with `pitt`/`pmr` scope.
-
-## Refreshing data
+Requires Python 3.10+ and a [Gemini API key](https://aistudio.google.com/apikey).
 
 ```bash
-python ingest.py && python embed.py
+git clone https://github.com/vishruthreddy18/pmr-research-bot.git
+cd pmr-research-bot
+echo "GOOGLE_API_KEY=your-key" > .env
+./setup.sh              # installs dependencies, downloads papers, builds the index (~2 min)
+source venv/bin/activate
+python app.py           # http://localhost:5001
 ```
 
-The app reads the database once at startup, so restart it afterwards. For a daily refresh, run
-those two commands from cron. Set `NCBI_API_KEY` (free) and `NCBI_EMAIL` to raise PubMed's rate
-limit.
+The prebuilt database is included. To run the app without rebuilding it, use
+`pip install -r requirements.txt` instead of `setup.sh`.
 
-## Switching to Claude
+## Project layout
 
-```bash
-pip install anthropic
-export LLM_PROVIDER=anthropic
-export ANTHROPIC_API_KEY=sk-ant-...
-# optional: export ANTHROPIC_MODEL=claude-sonnet-5-5   (the default)
+```
+├── app.py          Flask routes (chat, faculty, topics, stats)
+├── query.py        RAG engine: query parsing → retrieval → LLM → citations
+├── ingest.py       PubMed download → SQLite
+├── embed.py        SQLite → ChromaDB embeddings
+├── faculty.py      Faculty list and per-person PubMed search settings
+├── config.py       All settings
+├── templates/      Chat page
+├── static/         CSS and JavaScript
+├── data/           Prebuilt database and vector index
+└── docs/DETAILS.md Retrieval rules, search tuning, configuration, API, deployment
 ```
 
-No code changes are needed. `query.py` routes to whichever provider is configured.
+## Limitations
 
-## Deploying to Render (free tier)
+- **Coverage:** papers come from PubMed only, matched by author name and affiliation. Some papers
+  are missing, especially engineering conference papers and older co-authored work. See
+  `data/ingest_report.txt`.
+- **Answers are AI-generated** and can be wrong; check the linked sources.
+- **Don't enter confidential or unpublished work.** Questions are sent to Google's Gemini API.
 
-1. Run `setup.sh` locally, then commit `data/publications.db` and `data/chroma/`. The free tier has
-   no persistent disk, so the app serves the prebuilt database from the repo.
-2. Push to GitHub. In Render, choose **New → Blueprint** and select the repo (it uses `render.yaml`).
-3. Set `GOOGLE_API_KEY` in the Render dashboard.
+## Credits
 
-The app uses ChromaDB's ONNX build of all-MiniLM-L6-v2 instead of PyTorch `sentence-transformers`.
-The model and embeddings are the same, but the install is about 1 GB smaller and the app fits in
-the free tier's 512 MB of RAM. To use PyTorch instead, `pip install sentence-transformers`, set
-`EMBEDDING_BACKEND=sentence-transformers`, and re-run `embed.py`. Free Render services sleep when
-idle, so the first request after a pause takes about 30–60 seconds.
+- **Research:** the publications belong to the Pitt PM&R faculty, their co-authors and their
+  publishers.
+- **Data:** [PubMed](https://pubmed.ncbi.nlm.nih.gov/) and the
+  [NCBI E-utilities API](https://www.ncbi.nlm.nih.gov/books/NBK25501/), from the U.S. National
+  Library of Medicine. Abstracts remain the copyright of their publishers.
+- **Embedding model:** [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
+  by the sentence-transformers project ([Reimers & Gurevych, 2019](https://arxiv.org/abs/1908.10084)),
+  built on Microsoft's MiniLM ([Wang et al., 2020](https://arxiv.org/abs/2002.10957)).
+- **Libraries:** [ChromaDB](https://www.trychroma.com/), [ONNX Runtime](https://onnxruntime.ai/),
+  [Flask](https://flask.palletsprojects.com/), [Gunicorn](https://gunicorn.org/) and the
+  [Google Gen AI SDK](https://github.com/googleapis/python-genai).
+- **LLM:** [Google Gemini](https://ai.google.dev/).
 
-## Configuration (environment variables)
-
-| Variable | Default | Notes |
-|----------|---------|-------|
-| `GOOGLE_API_KEY` | – | Gemini key (`GEMINI_API_KEY` also works) |
-| `GEMINI_MODEL` | `gemini-3.5-flash` | Any Gemini model id |
-| `GEMINI_FALLBACK_MODELS` | `gemini-3.1-flash-lite,gemini-flash-latest` | Tried in order when the main model is busy or retired |
-| `LLM_PROVIDER` | `gemini` | `gemini` or `anthropic` |
-| `ANTHROPIC_MODEL` | `claude-sonnet-5-5` | |
-| `NCBI_API_KEY`, `NCBI_EMAIL` | – | Optional, raise PubMed's rate limit to 10 requests/sec |
-| `EMBEDDING_BACKEND` | `onnx` | or `sentence-transformers` |
-| `MODEL_CACHE_DIR` | `~/.cache/chroma` | Set to `.model_cache` on Render |
-| `PORT` | `5001` | macOS uses 5000 for AirPlay Receiver |
-
-## Logo
-
-The header looks for `static/pitt-logo.png` and shows a text badge if the file is missing. Add the
-official logo file from University Marketing Communications to use it.
+*This is an independent project and not an official University of Pittsburgh product. The Pitt name
+and colors are trademarks of the University of Pittsburgh.*
