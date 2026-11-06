@@ -73,8 +73,8 @@ sequenceDiagram
 Requires Python 3.10+ and a [Gemini API key](https://aistudio.google.com/apikey).
 
 ```bash
-git clone https://github.com/vishruthreddy18/pmr-research-bot.git
-cd pmr-research-bot
+git clone https://github.com/vishruthreddy18/pmr-research-explorer.git
+cd pmr-research-explorer
 echo "GOOGLE_API_KEY=your-key" > .env
 ./setup.sh              # installs dependencies, downloads papers, builds the index (~2 min)
 source venv/bin/activate
